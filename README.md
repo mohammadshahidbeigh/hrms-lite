@@ -256,3 +256,31 @@ Option B: **Docker (using provided `Dockerfile`)**
 - No advanced HR features (leave, payroll, etc.).
 - Basic optimistic UI; no global state management library.
 
+Add this short note to your `README.md`:
+
+---
+
+## Sample Data (Optional)
+
+A seeding script is available at:
+
+```bash
+backend/app/seed_sample_data.py
+```
+
+It:
+
+* Creates **40 employees** (`E001`–`E040`)
+* Generates realistic emails and random departments
+* Inserts attendance for the last **10 days** (~80% present, ~20% absent)
+* Clears existing Employee and Attendance data before seeding (you can comment this out in the script if needed)
+
+### Run the Script
+
+From the `backend` directory (with `.env` configured and `DATABASE_URL` pointing to your database, e.g. Neon):
+
+```bash
+python -m app.seed_sample_data
+```
+
+This will create tables if needed and seed the database with demo data for testing.
