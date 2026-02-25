@@ -23,7 +23,7 @@ A lightweight Human Resource Management System for managing **employees** and **
   - PostgreSQL (e.g. Neon)
 - **Deployment Targets**
   - Frontend: Vercel
-  - Backend: Render (Docker or native FastAPI)
+  - Backend: Render (native FastAPI)
 
 ### Core Features
 
@@ -65,7 +65,6 @@ A lightweight Human Resource Management System for managing **employees** and **
     - `src/pages/EmployeesPage.jsx` – employees UI.
     - `src/pages/AttendancePage.jsx` – attendance UI.
 - `.env.example` – example backend environment variables.
-- `Dockerfile` – container for FastAPI backend (suitable for Render).
 
 ### Database Schema
 
@@ -215,7 +214,15 @@ A lightweight Human Resource Management System for managing **employees** and **
 
 #### 2. Backend (Render)
 
-Option A: **Docker (using provided `Dockerfile`)**
+Option B: **Native FastAPI** (without Docker - Used Python 3 on render)
+
+1. Use Render's Python environment.
+2. Build command: `pip install -r backend/requirements.txt`.
+3. Start command: `uvicorn app.main:app --host 0.0.0.0 --port 8000`.
+4. Working directory: `backend`.
+5. Set the same environment variables as above.
+
+Option B: **Docker (using provided `Dockerfile`)**
 
 1. Push this repository to GitHub.
 2. In Render, create a new **Web Service** from your GitHub repo.
@@ -227,14 +234,6 @@ Option A: **Docker (using provided `Dockerfile`)**
    - `BACKEND_CORS_ORIGINS` – e.g. `http://localhost:5173,https://your-vercel-frontend-url`.
 5. Deploy. Your backend base URL will look like:
    - `https://your-backend.onrender.com`
-
-Option B: **Native FastAPI** (without Docker)
-
-1. Use Render's Python environment.
-2. Build command: `pip install -r backend/requirements.txt`.
-3. Start command: `uvicorn app.main:app --host 0.0.0.0 --port 8000`.
-4. Working directory: `backend`.
-5. Set the same environment variables as above.
 
 #### 3. Frontend (Vercel)
 
