@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { fetchEmployees } from "../api/employees";
 import {
-  fetchAttendanceForEmployee,
+  fetchAttendanceWithFilters,
   markAttendance,
 } from "../api/attendance";
 import { Button } from "../components/Button";
@@ -26,6 +26,8 @@ export function AttendancePage() {
   const [submitting, setSubmitting] = useState(false);
   const [attendance, setAttendance] = useState([]);
   const [error, setError] = useState("");
+  const [filterStartDate, setFilterStartDate] = useState("");
+  const [filterEndDate, setFilterEndDate] = useState("");
 
   const selectedEmployee = useMemo(
     () =>
@@ -54,7 +56,7 @@ export function AttendancePage() {
     }
   }
 
-  async function loadAttendance(employeeId) {
+  async function loadAttendance(employeeId, startDate, endDate) {
     if (!employeeId) {
       setAttendance([]);
       return;
@@ -62,7 +64,11 @@ export function AttendancePage() {
     try {
       setLoadingAttendance(true);
       setError("");
-      const data = await fetchAttendanceForEmployee(employeeId);
+      const data = await fetchAttendanceWithFilters(
+        employeeId,
+        startDate,
+        endDate,
+      );
       setAttendance(data);
     } catch (err) {
       setError(err.message);
@@ -77,10 +83,10 @@ export function AttendancePage() {
 
   useEffect(() => {
     if (selectedEmployeeId) {
-      loadAttendance(selectedEmployeeId);
+      loadAttendance(selectedEmployeeId, filterStartDate, filterEndDate);
       setForm((prev) => ({ ...prev, employee_id: Number(selectedEmployeeId) }));
     }
-  }, [selectedEmployeeId]);
+  }, [selectedEmployeeId, filterStartDate, filterEndDate]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -98,7 +104,7 @@ export function AttendancePage() {
         status: form.status,
       };
       await markAttendance(payload);
-      await loadAttendance(form.employee_id);
+      await loadAttendance(form.employee_id, filterStartDate, filterEndDate);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -171,29 +177,72 @@ export function AttendancePage() {
       </section>
 
       <section>
-        <div className="mb-2 flex items-center justify-between">
-          <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-              Attendance Records
-            </h2>
-            {selectedEmployee && (
-              <p className="text-xs text-slate-500">
-                {selectedEmployee.full_name} &middot; Total present days:{" "}
-                <span className="font-medium text-slate-700">
-                  {totalPresent}
-                </span>
-              </p>
+        <div className="mb-3 space-y-2">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                Attendance Records
+              </h2>
+              {selectedEmployee && (
+                <p className="text-xs text-slate-500">
+                  {selectedEmployee.full_name} &middot; Total present days:{" "}
+                  <span className="font-medium text-slate-700">
+                    {totalPresent}
+                  </span>
+                </p>
+              )}
+            </div>
+            {selectedEmployeeId && (
+              <Button
+                variant="subtle"
+                onClick={() =>
+                  loadAttendance(
+                    selectedEmployeeId,
+                    filterStartDate,
+                    filterEndDate,
+                  )
+                }
+                disabled={loadingAttendance}
+              >
+                Refresh
+              </Button>
             )}
           </div>
-          {selectedEmployeeId && (
+
+          <div className="flex flex-wrap items-end gap-3 text-sm">
+            <label className="flex flex-col gap-1">
+              <span className="font-medium text-slate-700">From date</span>
+              <input
+                type="date"
+                className="rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/40"
+                value={filterStartDate}
+                onChange={(e) => setFilterStartDate(e.target.value)}
+              />
+            </label>
+            <label className="flex flex-col gap-1">
+              <span className="font-medium text-slate-700">To date</span>
+              <input
+                type="date"
+                className="rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/40"
+                value={filterEndDate}
+                onChange={(e) => setFilterEndDate(e.target.value)}
+              />
+            </label>
             <Button
               variant="subtle"
-              onClick={() => loadAttendance(selectedEmployeeId)}
-              disabled={loadingAttendance}
+              className="mt-5"
+              onClick={() =>
+                loadAttendance(
+                  selectedEmployeeId,
+                  filterStartDate,
+                  filterEndDate,
+                )
+              }
+              disabled={loadingAttendance || !selectedEmployeeId}
             >
-              Refresh
+              Apply filters
             </Button>
-          )}
+          </div>
         </div>
 
         {loadingAttendance ? (

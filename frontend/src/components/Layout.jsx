@@ -5,7 +5,7 @@ export function Layout({ activeTab, onTabChange, children }) {
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <div>
             <h1 className="text-xl font-semibold tracking-tight text-slate-900">
-              HRMS Lite
+              HRMS Lite (Admin Panel)
             </h1>
             <p className="text-sm text-slate-500">
               Lightweight employee and attendance management

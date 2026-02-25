@@ -21,6 +21,7 @@ export function EmployeesPage() {
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [departmentsSummary, setDepartmentsSummary] = useState({});
 
   async function loadEmployees() {
     try {
@@ -28,6 +29,11 @@ export function EmployeesPage() {
       setError("");
       const data = await fetchEmployees();
       setEmployees(data);
+      const summary = data.reduce((acc, emp) => {
+        acc[emp.department] = (acc[emp.department] || 0) + 1;
+        return acc;
+      }, {});
+      setDepartmentsSummary(summary);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -85,6 +91,39 @@ export function EmployeesPage() {
 
   return (
     <div className="space-y-6">
+      <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          Overview
+        </h2>
+        <p className="mb-3 text-xs text-slate-500">
+          Quick snapshot of your employee directory.
+        </p>
+        <div className="grid gap-4 sm:grid-cols-3 text-sm">
+          <div className="rounded-md bg-slate-50 px-3 py-2">
+            <p className="text-xs text-slate-500">Total employees</p>
+            <p className="text-lg font-semibold text-slate-900">
+              {employees.length}
+            </p>
+          </div>
+          <div className="rounded-md bg-slate-50 px-3 py-2">
+            <p className="text-xs text-slate-500">Departments</p>
+            <p className="text-lg font-semibold text-slate-900">
+              {Object.keys(departmentsSummary).length}
+            </p>
+          </div>
+          <div className="rounded-md bg-slate-50 px-3 py-2">
+            <p className="text-xs text-slate-500">Largest department</p>
+            <p className="text-sm font-semibold text-slate-900">
+              {Object.keys(departmentsSummary).length === 0
+                ? "—"
+                : Object.entries(departmentsSummary).sort(
+                    (a, b) => b[1] - a[1],
+                  )[0][0]}
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
           Add Employee
