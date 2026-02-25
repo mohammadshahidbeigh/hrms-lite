@@ -260,7 +260,7 @@ Add this short note to your `README.md`:
 
 ---
 
-## Sample Data - (Optional)
+## Sample Data (Optional)
 
 A seeding script is available at:
 
