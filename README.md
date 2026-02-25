@@ -249,11 +249,6 @@ Option B: **Docker (using provided `Dockerfile`)**
 5. Deploy. Your frontend will be available at:
    - `https://your-frontend.vercel.app`
 
-### Live URLs (to be filled by you)
-
-- **Frontend (Vercel)**: `https://your-frontend.vercel.app`
-- **Backend (Render)**: `https://your-backend.onrender.com`
-
 ### Assumptions & Limitations
 
 - Single implicit admin, no authentication or authorization.
