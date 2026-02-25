@@ -14,6 +14,7 @@ A lightweight Human Resource Management System for managing **employees** and **
 - **Frontend**
   - React (Vite)
   - Tailwind CSS
+  - React Toastify (user notifications)
 - **Backend**
   - FastAPI
   - SQLAlchemy ORM
@@ -125,7 +126,7 @@ A lightweight Human Resource Management System for managing **employees** and **
   - States handled:
     - Loading (spinner).
     - Empty state when no employees.
-    - Error banner with message from backend.
+    - Error banner and toast notifications with message from backend.
 
 - **Attendance Page**
   - Employee dropdown sourced from `/employees`.
@@ -138,7 +139,7 @@ A lightweight Human Resource Management System for managing **employees** and **
     - Loading employees.
     - Loading attendance.
     - Empty states when no employees or no attendance.
-    - Error banner from backend messages.
+    - Error banner and toast notifications from backend messages.
 
 ### Running the Project Locally
 

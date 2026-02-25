@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 import { fetchEmployees } from "../api/employees";
 import {
   fetchAttendanceWithFilters,
@@ -105,8 +106,10 @@ export function AttendancePage() {
       };
       await markAttendance(payload);
       await loadAttendance(form.employee_id, filterStartDate, filterEndDate);
+      toast.success("Attendance recorded");
     } catch (err) {
       setError(err.message);
+      toast.error(err.message);
     } finally {
       setSubmitting(false);
     }

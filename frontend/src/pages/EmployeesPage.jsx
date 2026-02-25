@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { createEmployee, deleteEmployee, fetchEmployees } from "../api/employees";
 import { Button } from "../components/Button";
 import { EmptyState } from "../components/EmptyState";
@@ -69,8 +70,10 @@ export function EmployeesPage() {
       await createEmployee(form);
       setForm(initialForm);
       await loadEmployees();
+      toast.success("Employee created");
     } catch (err) {
       setError(err.message);
+      toast.error(err.message);
     } finally {
       setSubmitting(false);
     }
@@ -84,8 +87,10 @@ export function EmployeesPage() {
       setError("");
       await deleteEmployee(id);
       setEmployees((prev) => prev.filter((e) => e.id !== id));
+      toast.success("Employee deleted");
     } catch (err) {
       setError(err.message);
+      toast.error(err.message);
     }
   }
 
