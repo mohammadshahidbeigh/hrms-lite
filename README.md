@@ -261,12 +261,3 @@ Option B: **Docker (using provided `Dockerfile`)**
 - No advanced HR features (leave, payroll, etc.).
 - Basic optimistic UI; no global state management library.
 
-### How to Use for the Assignment
-
-1. Set up Neon, Render, and Vercel using the steps above.
-2. Update the README section **Live URLs** with your actual deployed URLs.
-3. Provide:
-   - Live frontend URL.
-   - Live backend URL (base API URL).
-   - GitHub repository link (this repo).
-
