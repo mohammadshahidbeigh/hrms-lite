@@ -214,7 +214,7 @@ A lightweight Human Resource Management System for managing **employees** and **
 
 #### 2. Backend (Render)
 
-Option B: **Native FastAPI** (without Docker - Used Python 3 on render)
+Option A: **Native FastAPI** (without Docker - Used Python 3 on render)
 
 1. Use Render's Python environment.
 2. Build command: `pip install -r backend/requirements.txt`.
